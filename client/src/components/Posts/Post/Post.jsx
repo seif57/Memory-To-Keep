@@ -10,7 +10,7 @@ import {
   Overlay,
   Title,
   Overlay2,
-} from "./postCustomStyles";
+} from "./postStyles";
 import { Button, CardContent, Typography } from "@mui/material";
 import moment from "moment";
 function Post({ post }) {
