@@ -21,7 +21,6 @@ function Form({ currentId, setCurrentId }) {
     selectedFile: "",
   });
   const post = useSelector((state) => selectByPostId(state, currentId));
-  console.log(currentId);
   const dispatch = useDispatch();
 
   useEffect(() => {

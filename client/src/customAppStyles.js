@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { AppBar, Typography } from "@mui/material";
+import { AppBar, Grid, Typography } from "@mui/material";
 
 export const AppBarStyled = styled(AppBar)`
   display: flex;
@@ -13,6 +13,12 @@ export const AppBarStyled = styled(AppBar)`
 export const TitleStyled = styled(Typography)`
   color: rgba(0, 183, 255, 1);
 `;
+
+export const GridStyled = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    flexDirection: "column-reverse",
+  },
+}));
 
 // export default makeStyles((theme) => ({
 //   appBar: {

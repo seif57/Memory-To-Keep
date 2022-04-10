@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import memories from "./assets/images/memories.png";
 import Posts from "./components/Posts/Posts";
 import Form from "./components/Form/Form";
-import { AppBarStyled, TitleStyled } from "./customAppStyles";
+import { AppBarStyled, TitleStyled, GridStyled } from "./customAppStyles";
 import { ImageStyled } from "./appStyles";
 import { getPosts } from "./actions/posts";
 
@@ -27,7 +27,7 @@ function App() {
       </AppBarStyled>
       <Grow in>
         <Container>
-          <Grid
+          <GridStyled
             container
             justifyContent="space-between"
             alignItems="stretch"
@@ -39,7 +39,7 @@ function App() {
             <Grid item xs={12} sm={4}>
               <Form currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
-          </Grid>
+          </GridStyled>
         </Container>
       </Grow>
     </Container>

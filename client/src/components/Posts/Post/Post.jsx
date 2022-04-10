@@ -2,6 +2,7 @@ import React from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch } from "react-redux";
 import {
   CardActionsStyled,
   CardMediaStyled,
@@ -13,8 +14,18 @@ import {
 } from "./postStyles";
 import { Button, CardContent, Typography } from "@mui/material";
 import moment from "moment";
+import { deletePost, likePost } from "../../../actions/posts";
 
 function Post({ post, setCurrentId }) {
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deletePost(post._id));
+  };
+
+  const handleLike = () => {
+    dispatch(likePost(post._id));
+  };
   return (
     <CardStyled>
       <CardMediaStyled image={post.selectedFile} title={post.title} />
@@ -42,19 +53,19 @@ function Post({ post, setCurrentId }) {
         {post.title}
       </Title>
       <CardContent>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="body2" color="textSecondary" gutterBottom>
           {post.message}
         </Typography>
       </CardContent>
       <CardActionsStyled>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button size="small" color="primary" onClick={handleLike}>
           <ThumbUpAltIcon fontSize="small" />
-          Like
+          &nbsp; Like &nbsp;
           {post.likeCount}
         </Button>
-        <Button size="small" color="error" onClick={() => {}}>
+        <Button size="small" color="error" onClick={handleDelete}>
           <DeleteIcon fontSize="small" />
-          Delete
+          &nbsp; Delete
         </Button>
       </CardActionsStyled>
     </CardStyled>

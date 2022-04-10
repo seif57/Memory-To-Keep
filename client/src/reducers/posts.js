@@ -1,5 +1,11 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { getPosts, createPost, updatePost } from "../actions/posts";
+import {
+  getPosts,
+  createPost,
+  updatePost,
+  deletePost,
+  likePost,
+} from "../actions/posts";
 const postsAdapter = createEntityAdapter({
   selectId: (post) => post._id,
 });
@@ -41,6 +47,17 @@ const postsSlice = createSlice({
     },
     [updatePost.pending]: (state) => {
       state.loading = true;
+    },
+    [deletePost.fulfilled]: (state, action) => {
+      state.loading = false;
+      postsAdapter.removeOne(state, action);
+    },
+    [likePost.fulfilled]: (state, action) => {
+      state.loading = false;
+      postsAdapter.updateOne(state, {
+        id: action.payload._id,
+        changes: action.payload,
+      });
     },
   },
 });

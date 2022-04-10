@@ -35,3 +35,21 @@ export const updatePost = createAsyncThunk(
     }
   }
 );
+
+export const deletePost = createAsyncThunk("posts/deletePost", async (id) => {
+  try {
+    await api.deletePost(id);
+    return id;
+  } catch (error) {
+    return error;
+  }
+});
+
+export const likePost = createAsyncThunk("posts/likePost", async (id) => {
+  try {
+    const { data } = await api.likePost(id);
+    return data;
+  } catch (error) {
+    return error;
+  }
+});
