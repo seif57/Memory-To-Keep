@@ -13,8 +13,8 @@ import {
 } from "./postStyles";
 import { Button, CardContent, Typography } from "@mui/material";
 import moment from "moment";
-function Post({ post }) {
-  console.log(post);
+
+function Post({ post, setCurrentId }) {
   return (
     <CardStyled>
       <CardMediaStyled image={post.selectedFile} title={post.title} />
@@ -25,7 +25,11 @@ function Post({ post }) {
         </Typography>
       </Overlay>
       <Overlay2>
-        <Button style={{ color: "white" }} size="small" onClick={() => {}}>
+        <Button
+          style={{ color: "white" }}
+          size="small"
+          onClick={() => setCurrentId(post._id)}
+        >
           <MoreHorizIcon />
         </Button>
       </Overlay2>
@@ -34,10 +38,13 @@ function Post({ post }) {
           {post.tags.map((tag) => `#${tag} `)}
         </Typography>
       </Details>
+      <Title variant="h5" gutterBottom>
+        {post.title}
+      </Title>
       <CardContent>
-        <Title variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom>
           {post.message}
-        </Title>
+        </Typography>
       </CardContent>
       <CardActionsStyled>
         <Button size="small" color="primary" onClick={() => {}}>

@@ -1,5 +1,5 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { getPosts, createPost } from "../actions/posts";
+import { getPosts, createPost, updatePost } from "../actions/posts";
 const postsAdapter = createEntityAdapter({
   selectId: (post) => post._id,
 });
@@ -11,7 +11,7 @@ const postsSlice = createSlice({
   extraReducers: {
     [getPosts.fulfilled]: (state, action) => {
       state.loading = false;
-      postsAdapter.setAll(state, action.payload);
+      postsAdapter.setAll(state, action);
     },
     [getPosts.rejected]: (state, action) => {
       state.error = action.error;
@@ -29,10 +29,23 @@ const postsSlice = createSlice({
     [createPost.pending]: (state) => {
       state.loading = true;
     },
+    [updatePost.fulfilled]: (state, action) => {
+      state.loading = false;
+      postsAdapter.updateOne(state, {
+        id: action.payload._id,
+        changes: action.payload,
+      });
+    },
+    [updatePost.rejected]: (state, action) => {
+      state.error = action.error;
+    },
+    [updatePost.pending]: (state) => {
+      state.loading = true;
+    },
   },
 });
 
-export const { selectAll: selectAllPosts, selectById } =
+export const { selectAll: selectAllPosts, selectById: selectByPostId } =
   postsAdapter.getSelectors((state) => state.posts);
 
 export default postsSlice.reducer;
