@@ -11,7 +11,7 @@ import {
   Overlay,
   Title,
   Overlay2,
-} from "./postStyles";
+} from "./styles";
 import { Button, CardContent, Typography } from "@mui/material";
 import moment from "moment";
 import { deletePost, likePost } from "../../../actions/posts";
@@ -39,8 +39,7 @@ function Post({ post, setCurrentId }) {
         <Button
           style={{ color: "white" }}
           size="small"
-          onClick={() => setCurrentId(post._id)}
-        >
+          onClick={() => setCurrentId(post._id)}>
           <MoreHorizIcon />
         </Button>
       </Overlay2>

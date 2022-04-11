@@ -8,7 +8,7 @@ import {
   SubmitButtonStyled,
   FormContainerStyled,
   FileInputContainerStyled,
-} from "./formStyles";
+} from "./styles";
 import { createPost, updatePost } from "../../actions/posts";
 import { selectByPostId } from "../../reducers/posts";
 
@@ -54,8 +54,7 @@ function Form({ currentId, setCurrentId }) {
       <FormContainerStyled
         autoComplete="off"
         noValidate
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         <Typography variant="h6">
           {currentId ? "Editing" : "Creating"} a Memory
         </Typography>
@@ -111,8 +110,7 @@ function Form({ currentId, setCurrentId }) {
           color="primary"
           size="large"
           fullWidth
-          type="submit"
-        >
+          type="submit">
           Submit
         </SubmitButtonStyled>
         <Button
@@ -120,8 +118,7 @@ function Form({ currentId, setCurrentId }) {
           color="error"
           size="small"
           fullWidth
-          onClick={clearForm}
-        >
+          onClick={clearForm}>
           Clear
         </Button>
       </FormContainerStyled>
