@@ -9,7 +9,12 @@ import Auth from "./components/Auth/Auth";
 
 function App() {
   return (
-    <SnackbarProvider maxSnack={3}>
+    <SnackbarProvider
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+      maxSnack={3}>
       <Container maxWidth="lg">
         <Navbar />
         <Routes>

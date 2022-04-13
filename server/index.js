@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import postsRouter from "./routes/posts.js";
+import userRoutes from "./routes/user.js";
 
 const app = express();
 dotenv.config();
@@ -11,6 +12,7 @@ app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 app.use("/posts", postsRouter);
+app.use("/user", userRoutes);
 
 // connect to mongodb
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Container, Grid, Typography } from "@mui/material";
+import Slide from "@mui/material/Slide";
 import {
   AvatarStyled,
   FormStyled,
@@ -9,24 +10,45 @@ import {
 } from "./styles";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Input from "./Input";
 import Icon from "./Icon";
-import { login } from "../../reducers/auth";
+import { googleSignIn } from "../../reducers/auth";
+import { signIn, signUp } from "../../reducers/auth";
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
-  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-
+  const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (isSignUp) {
+      if (formData.password !== formData.confirmPassword) {
+        enqueueSnackbar("Passwords do not match", { variant: "error" });
+        return;
+      }
+      dispatch(signUp({ formData: formData, navigate: navigate }));
+    } else {
+      dispatch(signIn({ formData: formData, navigate: navigate }));
+    }
   };
-  const handleChange = () => {
-    console.log("change");
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -39,17 +61,26 @@ function Auth() {
   const googleSignInSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
+    console.log(result);
     try {
       dispatch(
-        login({
+        googleSignIn({
           token,
           result,
         })
       );
+      navigate("/");
     } catch (error) {
-      enqueueSnackbar(error.message, { variant: "error" });
+      enqueueSnackbar(error.message, {
+        autoHideDuration: 2000,
+        variant: "error",
+      });
     }
-    enqueueSnackbar("Google sign in success", { variant: "success" });
+    enqueueSnackbar("Google sign in success", {
+      TransitionComponent: Slide,
+      variant: "success",
+      autoHideDuration: 2000,
+    });
   };
   const googleSignInFailure = (error) => {
     enqueueSnackbar("Google sign in failed", { variant: "error" });
