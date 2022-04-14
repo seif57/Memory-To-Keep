@@ -13,6 +13,9 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  name: {
+    type: String,
+  },
   tags: {
     type: Array,
     required: true,
@@ -22,8 +25,8 @@ const postSchema = new mongoose.Schema({
     required: false,
   },
   likeCount: {
-    type: Number,
-    default: 0,
+    type: [String],
+    default: [],
   },
   createdAt: {
     type: Date,

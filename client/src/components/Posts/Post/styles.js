@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 export const CardStyled = styled(Card)`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   border-radius: 15px;
   height: 100%;
   position: relative;

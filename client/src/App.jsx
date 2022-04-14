@@ -14,7 +14,8 @@ function App() {
         vertical: "top",
         horizontal: "center",
       }}
-      maxSnack={3}>
+      maxSnack={3}
+    >
       <Container maxWidth="lg">
         <Navbar />
         <Routes>

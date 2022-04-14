@@ -42,14 +42,17 @@ function Navbar() {
       <ToolBarStyled>
         {user ? (
           <Profile>
-            <AvatarStyled alt={user.result.name} src={user.result.imageUrl}>
-              {user.result.name.charAt(0)}
+            <AvatarStyled alt={user.result?.name} src={user.result?.imageUrl}>
+              {user.result?.name.charAt(0)}
             </AvatarStyled>
-            <TypographyStyled variant="h6">{user.result.name}</TypographyStyled>
+            <TypographyStyled variant="h6">
+              {user.result?.name}
+            </TypographyStyled>
             <LogoutButton
               onClick={handleLogout}
               variant="contained"
-              color="secondary">
+              color="secondary"
+            >
               Sign Out
             </LogoutButton>
           </Profile>
@@ -58,7 +61,8 @@ function Navbar() {
             component={Link}
             to="/auth"
             color="primary"
-            variant="contained">
+            variant="contained"
+          >
             Sign In
           </Button>
         )}

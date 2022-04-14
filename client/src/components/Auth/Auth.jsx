@@ -16,8 +16,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Input from "./Input";
 import Icon from "./Icon";
 import { googleSignIn } from "../../reducers/auth";
-import { signIn, signUp } from "../../reducers/auth";
-
+import { signIn, signUp } from "../../actions/auth";
 const initialState = {
   firstName: "",
   lastName: "",
@@ -55,13 +54,12 @@ function Auth() {
 
   const switchMode = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp);
-    handleShowPassword(false);
+    setShowPassword(false);
   };
 
   const googleSignInSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
-    console.log(result);
     try {
       dispatch(
         googleSignIn({
@@ -139,7 +137,8 @@ function Auth() {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary">
+            color="primary"
+          >
             {isSignUp ? "Sign Up" : "Sign In"}
           </SubmitButtonStyled>
           <GoogleLogin
@@ -151,7 +150,8 @@ function Auth() {
                 onClick={renderProps.onClick}
                 disabled={renderProps.disabled}
                 startIcon={<Icon />}
-                variant="contained">
+                variant="contained"
+              >
                 Sign In with Google
               </GoogleButtonStyled>
             )}

@@ -14,12 +14,12 @@ import { selectByPostId } from "../../reducers/posts";
 
 function Form({ currentId, setCurrentId }) {
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
+  const user = useSelector((state) => state.auth.authData);
   const post = useSelector((state) => selectByPostId(state, currentId));
   const dispatch = useDispatch();
 
@@ -31,9 +31,11 @@ function Form({ currentId, setCurrentId }) {
     e.preventDefault();
 
     if (currentId) {
-      dispatch(updatePost(postData));
+      dispatch(
+        updatePost({ ...postData, id: currentId, name: user?.result?.name })
+      );
     } else {
-      dispatch(createPost(postData));
+      dispatch(createPost({ ...postData, name: user?.result?.name }));
     }
     clearForm();
   };
@@ -41,33 +43,33 @@ function Form({ currentId, setCurrentId }) {
   const clearForm = () => {
     setCurrentId(null);
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
     });
   };
+  if (!user?.result?.name) {
+    return (
+      <PaperStyled>
+        <Typography variant="h6" align="center">
+          Please Sign In to create your own memories and share with the world!
+        </Typography>
+      </PaperStyled>
+    );
+  }
 
   return (
     <PaperStyled elevation={2}>
       <FormContainerStyled
         autoComplete="off"
         noValidate
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+      >
         <Typography variant="h6">
           {currentId ? "Editing" : "Creating"} a Memory
         </Typography>
-        <TextFieldStyled
-          name="creator"
-          label="Creator"
-          variant="outlined"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
+
         <TextFieldStyled
           name="title"
           label="Title"
@@ -110,7 +112,8 @@ function Form({ currentId, setCurrentId }) {
           color="primary"
           size="large"
           fullWidth
-          type="submit">
+          type="submit"
+        >
           Submit
         </SubmitButtonStyled>
         <Button
@@ -118,7 +121,8 @@ function Form({ currentId, setCurrentId }) {
           color="error"
           size="small"
           fullWidth
-          onClick={clearForm}>
+          onClick={clearForm}
+        >
           Clear
         </Button>
       </FormContainerStyled>

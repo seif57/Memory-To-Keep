@@ -12,9 +12,10 @@ export const getPosts = createAsyncThunk("posts/getPosts", async () => {
 
 export const createPost = createAsyncThunk(
   "posts/createPost",
-  async (newPost) => {
+  async (newPost, { getState }) => {
+    const token = getState().auth.authData.token;
     try {
-      const { data } = await api.createPost(newPost);
+      const { data } = await api.createPost(newPost, token);
       return data;
     } catch (error) {
       return error;

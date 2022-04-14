@@ -30,7 +30,7 @@ function Post({ post, setCurrentId }) {
     <CardStyled>
       <CardMediaStyled image={post.selectedFile} title={post.title} />
       <Overlay>
-        <Typography variant="h6">{post.creator}</Typography>
+        <Typography variant="h6">{post.name}</Typography>
         <Typography variant="body2">
           {moment(post.createdAt).fromNow()}
         </Typography>
@@ -39,7 +39,8 @@ function Post({ post, setCurrentId }) {
         <Button
           style={{ color: "white" }}
           size="small"
-          onClick={() => setCurrentId(post._id)}>
+          onClick={() => setCurrentId(post._id)}
+        >
           <MoreHorizIcon />
         </Button>
       </Overlay2>

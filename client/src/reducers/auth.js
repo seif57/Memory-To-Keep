@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { signIn, signUp } from "../actions/auth";
 const initialState = {
   loading: true,
   error: null,
@@ -13,16 +13,47 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.authData = action.payload;
+      localStorage.setItem("profile", JSON.stringify(action.payload));
     },
     logout: (state) => {
+      localStorage.removeItem("profile");
       state.loading = false;
       state.error = null;
       state.authData = null;
     },
   },
-  extraReducers: {},
+  extraReducers: {
+    [signIn.pending]: (state, action) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [signIn.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.authData = action.payload;
+      localStorage.setItem("profile", JSON.stringify(action.payload));
+    },
+    [signIn.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+    [signUp.pending]: (state, action) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [signUp.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.authData = action.payload;
+      localStorage.setItem("profile", JSON.stringify(action.payload));
+    },
+    [signUp.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+  },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { googleSignIn, logout } = authSlice.actions;
 
 export default authSlice.reducer;
