@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   AppBarStyled,
   TitleStyled,
@@ -10,26 +10,20 @@ import {
   LogoutButton,
   Profile,
 } from "./styles";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import memories from "../../assets/images/memories.png";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../reducers/auth";
 
 function Navbar() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.authData);
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/auth");
   };
-  // useEffect(() => {
-  //   const token = user?.token;
-  //   //JWT token
-  // }, [user]);
 
   return (
     <AppBarStyled position="static" color="inherit">

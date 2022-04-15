@@ -1,8 +1,9 @@
 import React from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ThumbUpAltOutlined from "@mui/icons-material/ThumbUpAltOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CardActionsStyled,
   CardMediaStyled,
@@ -18,14 +19,45 @@ import { deletePost, likePost } from "../../../actions/posts";
 
 function Post({ post, setCurrentId }) {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.authData);
 
   const handleDelete = () => {
     dispatch(deletePost(post._id));
   };
 
   const handleLike = () => {
+    console.log(post._id);
     dispatch(likePost(post._id));
   };
+
+  const Likes = () => {
+    if (post?.likes?.length > 0) {
+      return post.likes.find(
+        (like) => like === (user?.result?.googleId || user?.result?._id)
+      ) ? (
+        <>
+          <ThumbUpAltIcon fontSize="small" />
+          &nbsp;
+          {post.likes.length > 2
+            ? `You and ${post.likes.length - 1} others`
+            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+        </>
+      ) : (
+        <>
+          <ThumbUpAltOutlined fontSize="small" />
+          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+        </>
+      );
+    }
+
+    return (
+      <>
+        <ThumbUpAltOutlined fontSize="small" />
+        &nbsp;Like
+      </>
+    );
+  };
+
   return (
     <CardStyled>
       <CardMediaStyled image={post.selectedFile} title={post.title} />
@@ -58,15 +90,20 @@ function Post({ post, setCurrentId }) {
         </Typography>
       </CardContent>
       <CardActionsStyled>
-        <Button size="small" color="primary" onClick={handleLike}>
-          <ThumbUpAltIcon fontSize="small" />
-          &nbsp; Like &nbsp;
-          {post.likeCount}
+        <Button
+          size="small"
+          color="primary"
+          disabled={!user?.result}
+          onClick={handleLike}
+        >
+          <Likes />
         </Button>
-        <Button size="small" color="error" onClick={handleDelete}>
-          <DeleteIcon fontSize="small" />
-          &nbsp; Delete
-        </Button>
+        {(user?.result?.googleId === post?.creator ||
+          user?.result?._id === post?.creator) && (
+          <Button size="small" color="secondary" onClick={handleDelete}>
+            <DeleteIcon fontSize="small" /> &nbsp; Delete
+          </Button>
+        )}
       </CardActionsStyled>
     </CardStyled>
   );

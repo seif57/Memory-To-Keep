@@ -13,10 +13,8 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.authData = action.payload;
-      localStorage.setItem("profile", JSON.stringify(action.payload));
     },
     logout: (state) => {
-      localStorage.removeItem("profile");
       state.loading = false;
       state.error = null;
       state.authData = null;
@@ -31,7 +29,6 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.authData = action.payload;
-      localStorage.setItem("profile", JSON.stringify(action.payload));
     },
     [signIn.rejected]: (state, action) => {
       state.loading = false;
@@ -45,7 +42,6 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.authData = action.payload;
-      localStorage.setItem("profile", JSON.stringify(action.payload));
     },
     [signUp.rejected]: (state, action) => {
       state.loading = false;
