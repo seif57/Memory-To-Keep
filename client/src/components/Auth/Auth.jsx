@@ -41,8 +41,18 @@ function Auth() {
         return;
       }
       dispatch(signUp({ formData: formData, navigate: navigate }));
+      enqueueSnackbar("Sign Up Successful", {
+        TransitionComponent: Slide,
+        variant: "success",
+        autoHideDuration: 2000,
+      });
     } else {
       dispatch(signIn({ formData: formData, navigate: navigate }));
+      enqueueSnackbar("Sign In Successful", {
+        TransitionComponent: Slide,
+        variant: "success",
+        autoHideDuration: 2000,
+      });
     }
   };
   const handleChange = (event) => {

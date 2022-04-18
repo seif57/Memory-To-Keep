@@ -1,6 +1,6 @@
 import React from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ThumbUpAltOutlined from "@mui/icons-material/ThumbUpAltOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +26,6 @@ function Post({ post, setCurrentId }) {
   };
 
   const handleLike = () => {
-    console.log(post._id);
     dispatch(likePost(post._id));
   };
 
@@ -59,7 +58,7 @@ function Post({ post, setCurrentId }) {
   };
 
   return (
-    <CardStyled>
+    <CardStyled raised elevation={6}>
       <CardMediaStyled image={post.selectedFile} title={post.title} />
       <Overlay>
         <Typography variant="h6">{post.name}</Typography>
@@ -67,25 +66,38 @@ function Post({ post, setCurrentId }) {
           {moment(post.createdAt).fromNow()}
         </Typography>
       </Overlay>
-      <Overlay2>
-        <Button
-          style={{ color: "white" }}
-          size="small"
-          onClick={() => setCurrentId(post._id)}
-        >
-          <MoreHorizIcon />
-        </Button>
-      </Overlay2>
+      {(user?.result?.googleId === post?.creator ||
+        user?.result?._id === post?.creator) && (
+        <Overlay2>
+          <Button
+            style={{ color: "white" }}
+            size="small"
+            onClick={() => setCurrentId(post._id)}
+          >
+            <ModeEditIcon />
+          </Button>
+        </Overlay2>
+      )}
       <Details>
         <Typography variant="body2" color="textSecondary">
           {post.tags.map((tag) => `#${tag} `)}
         </Typography>
       </Details>
-      <Title variant="h5" gutterBottom>
+      <Title noWrap variant="h5" gutterBottom>
         {post.title}
       </Title>
       <CardContent>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
+        <Typography
+          sx={{
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+          variant="body2"
+          color="textSecondary"
+          gutterBottom
+        >
           {post.message}
         </Typography>
       </CardContent>

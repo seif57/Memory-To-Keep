@@ -12,10 +12,9 @@ export const getPosts = createAsyncThunk("posts/getPosts", async () => {
 
 export const createPost = createAsyncThunk(
   "posts/createPost",
-  async (newPost, { getState }) => {
+  async (newPost) => {
     try {
-      const { token } = getState().auth.authData;
-      const { data } = await api.createPost(newPost, token);
+      const { data } = await api.createPost(newPost);
       return data;
     } catch (error) {
       return error;
@@ -25,12 +24,11 @@ export const createPost = createAsyncThunk(
 
 export const updatePost = createAsyncThunk(
   "posts/updatePost",
-  async (updatedPost, { getState }) => {
+  async (updatedPost) => {
     try {
-      const { token } = getState().auth.authData;
       const { _id, ...post } = updatedPost;
 
-      const { data } = await api.updatePost(_id, post, token);
+      const { data } = await api.updatePost(_id, post);
       return data;
     } catch (error) {
       return error;
@@ -38,28 +36,29 @@ export const updatePost = createAsyncThunk(
   }
 );
 
-export const deletePost = createAsyncThunk(
-  "posts/deletePost",
-  async (id, { getState }) => {
-    try {
-      const { token } = getState().auth.authData;
-      await api.deletePost(id, token);
-      return id;
-    } catch (error) {
-      return error;
-    }
+export const deletePost = createAsyncThunk("posts/deletePost", async (id) => {
+  try {
+    await api.deletePost(id);
+    return id;
+  } catch (error) {
+    return error;
   }
-);
+});
 
-export const likePost = createAsyncThunk(
-  "posts/likePost",
-  async (id, { getState }) => {
+export const likePost = createAsyncThunk("posts/likePost", async (id) => {
+  try {
+    const { data } = await api.likePost(id);
+    return data;
+  } catch (error) {
+    return error;
+  }
+});
+
+export const getPostsBySearch = createAsyncThunk(
+  "posts/getPostsBySearch",
+  async (searchQuery) => {
     try {
-      const { token } = getState().auth.authData;
-      console.log("token", token);
-      console.log(token);
-      const { data } = await api.likePost(id, token);
-      console.log("data", data);
+      const { data } = await api.getPostsBySearch(searchQuery);
       return data;
     } catch (error) {
       return error;

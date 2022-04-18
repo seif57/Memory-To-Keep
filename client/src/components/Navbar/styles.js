@@ -17,7 +17,8 @@ export const TitleStyled = styled(Typography)`
   text-decoration: none;
 `;
 export const ImageStyled = styled("img")`
-  marginleft: 15px;
+  margin-left: 10px;
+  margin-top: 5px;
 `;
 export const InnerNavbarStyled = styled("div")`
   display: flex;
@@ -43,8 +44,14 @@ export const TypographyStyled = styled(Typography)`
 export const LogoutButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(deepPurple[500]),
 }));
-export const Profile = styled("div")`
-  display: flex;
-  justify-content: space-between;
-  width: 400px;
-`;
+export const Profile = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "400px",
+  [theme.breakpoints.down("sm")]: {
+    width: "auto",
+    marginTop: 20,
+    justifyContent: "center",
+  },
+}));

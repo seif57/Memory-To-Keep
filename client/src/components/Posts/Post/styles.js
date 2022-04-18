@@ -35,7 +35,7 @@ export const Overlay = styled("div")`
 export const Overlay2 = styled("div")`
   position: absolute;
   top: 20px;
-  right: 20px;
+  right: 5px;
   color: white;
 `;
 

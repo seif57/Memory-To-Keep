@@ -24,7 +24,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  likeCount: {
+  likes: {
     type: [String],
     default: [],
   },

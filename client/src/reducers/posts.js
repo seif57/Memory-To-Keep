@@ -5,6 +5,7 @@ import {
   updatePost,
   deletePost,
   likePost,
+  getPostsBySearch,
 } from "../actions/posts";
 const postsAdapter = createEntityAdapter({
   selectId: (post) => post._id,
@@ -58,6 +59,16 @@ const postsSlice = createSlice({
         id: action.payload._id,
         changes: action.payload,
       });
+    },
+    [getPostsBySearch.fulfilled]: (state, action) => {
+      state.loading = false;
+      postsAdapter.setAll(state, action);
+    },
+    [getPostsBySearch.rejected]: (state, action) => {
+      state.error = action.error;
+    },
+    [getPostsBySearch.pending]: (state) => {
+      state.loading = true;
     },
   },
 });

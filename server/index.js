@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import postsRouter from "./routes/posts.js";
 import userRoutes from "./routes/user.js";
+import errors from "./middleware/error.js";
 
 const app = express();
 dotenv.config();
@@ -13,11 +14,10 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 app.use("/posts", postsRouter);
 app.use("/user", userRoutes);
+app.use("/", errors);
 
 // connect to mongodb
 
-// const CONNECTION_URL =
-//   "mongodb+srv://seif_sallam:Seif2012@cluster0.tyb6i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const Port = process.env.PORT || 5000;
 
 mongoose

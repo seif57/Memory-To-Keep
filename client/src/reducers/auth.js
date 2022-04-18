@@ -13,11 +13,18 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.authData = action.payload;
+      localStorage.setItem("user", JSON.stringify(state.authData));
     },
     logout: (state) => {
       state.loading = false;
       state.error = null;
       state.authData = null;
+      localStorage.removeItem("user");
+    },
+    setToken: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.authData = action.payload;
     },
   },
   extraReducers: {
@@ -29,6 +36,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.authData = action.payload;
+      localStorage.setItem("user", JSON.stringify(state.authData));
     },
     [signIn.rejected]: (state, action) => {
       state.loading = false;
@@ -42,6 +50,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.authData = action.payload;
+      localStorage.setItem("user", JSON.stringify(state.authData));
     },
     [signUp.rejected]: (state, action) => {
       state.loading = false;
@@ -50,6 +59,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { googleSignIn, logout } = authSlice.actions;
+export const { googleSignIn, logout, setToken } = authSlice.actions;
 
 export default authSlice.reducer;
