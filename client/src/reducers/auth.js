@@ -40,7 +40,8 @@ const authSlice = createSlice({
     },
     [signIn.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.error;
+      state.error = action.payload;
+      localStorage.removeItem("user");
     },
     [signUp.pending]: (state, action) => {
       state.loading = true;
@@ -54,7 +55,8 @@ const authSlice = createSlice({
     },
     [signUp.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.error;
+      state.error = action.payload;
+      localStorage.removeItem("user");
     },
   },
 });

@@ -40,23 +40,31 @@ function Auth() {
         enqueueSnackbar("Passwords do not match", { variant: "error" });
         return;
       }
-      dispatch(signUp({ formData: formData, navigate: navigate }));
-      enqueueSnackbar("Sign Up Successful", {
-        TransitionComponent: Slide,
-        variant: "success",
-        autoHideDuration: 2000,
-      });
+      dispatch(signUp({ formData: formData, navigate: navigate })).then(
+        (res) => {
+          if (res.error) {
+            enqueueSnackbar(res.payload.response.data.message, {
+              variant: "error",
+              autoHideDuration: 3000,
+            });
+          } else {
+            enqueueSnackbar("Successfully signed up", {
+              variant: "success",
+              autoHideDuration: 2000,
+            });
+          }
+        }
+      );
     } else {
       dispatch(signIn({ formData: formData, navigate: navigate })).then(
         (response) => {
           if (response.error) {
             console.log(response);
-            enqueueSnackbar(response.error, {
+            return enqueueSnackbar(response.payload.response.data.message, {
               variant: "error",
               autoHideDuration: 2000,
             });
           }
-          console.log(response);
           enqueueSnackbar(response.payload.message, {
             variant: "success",
             autoHideDuration: 2000,
@@ -157,7 +165,8 @@ function Auth() {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary">
+            color="primary"
+          >
             {isSignUp ? "Sign Up" : "Sign In"}
           </SubmitButtonStyled>
           <GoogleLogin
@@ -169,7 +178,8 @@ function Auth() {
                 onClick={renderProps.onClick}
                 disabled={renderProps.disabled}
                 startIcon={<Icon />}
-                variant="contained">
+                variant="contained"
+              >
                 Sign In with Google
               </GoogleButtonStyled>
             )}
