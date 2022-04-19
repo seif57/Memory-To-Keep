@@ -60,12 +60,11 @@ function Form({ currentId, setCurrentId }) {
   }
 
   return (
-    <PaperStyled elevation={2}>
+    <PaperStyled elevation={6}>
       <FormContainerStyled
         autoComplete="off"
         noValidate
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         <Typography variant="h6">
           {currentId ? "Editing" : "Creating"} a Memory
         </Typography>
@@ -112,8 +111,7 @@ function Form({ currentId, setCurrentId }) {
           color="primary"
           size="large"
           fullWidth
-          type="submit"
-        >
+          type="submit">
           Submit
         </SubmitButtonStyled>
         <Button
@@ -121,8 +119,7 @@ function Form({ currentId, setCurrentId }) {
           color="error"
           size="small"
           fullWidth
-          onClick={clearForm}
-        >
+          onClick={clearForm}>
           Clear
         </Button>
       </FormContainerStyled>

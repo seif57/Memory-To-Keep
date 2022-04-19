@@ -47,12 +47,22 @@ function Auth() {
         autoHideDuration: 2000,
       });
     } else {
-      dispatch(signIn({ formData: formData, navigate: navigate }));
-      enqueueSnackbar("Sign In Successful", {
-        TransitionComponent: Slide,
-        variant: "success",
-        autoHideDuration: 2000,
-      });
+      dispatch(signIn({ formData: formData, navigate: navigate })).then(
+        (response) => {
+          if (response.error) {
+            console.log(response);
+            enqueueSnackbar(response.error, {
+              variant: "error",
+              autoHideDuration: 2000,
+            });
+          }
+          console.log(response);
+          enqueueSnackbar(response.payload.message, {
+            variant: "success",
+            autoHideDuration: 2000,
+          });
+        }
+      );
     }
   };
   const handleChange = (event) => {
@@ -147,8 +157,7 @@ function Auth() {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
-          >
+            color="primary">
             {isSignUp ? "Sign Up" : "Sign In"}
           </SubmitButtonStyled>
           <GoogleLogin
@@ -160,8 +169,7 @@ function Auth() {
                 onClick={renderProps.onClick}
                 disabled={renderProps.disabled}
                 startIcon={<Icon />}
-                variant="contained"
-              >
+                variant="contained">
                 Sign In with Google
               </GoogleButtonStyled>
             )}

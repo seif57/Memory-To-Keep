@@ -16,10 +16,10 @@ const authSlice = createSlice({
       localStorage.setItem("user", JSON.stringify(state.authData));
     },
     logout: (state) => {
+      localStorage.removeItem("user");
       state.loading = false;
       state.error = null;
       state.authData = null;
-      localStorage.removeItem("user");
     },
     setToken: (state, action) => {
       state.loading = false;

@@ -21,7 +21,12 @@ function App() {
   }, [user, dispatch]);
 
   return (
-    <SnackbarProvider maxSnack={3}>
+    <SnackbarProvider
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+      maxSnack={3}>
       <Container maxWidth="xl">
         <Navbar />
         <Routes>

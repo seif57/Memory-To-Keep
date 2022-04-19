@@ -1,4 +1,10 @@
-import { Card, CardActions, CardMedia, Typography } from "@mui/material";
+import {
+  Card,
+  CardActions,
+  CardMedia,
+  Typography,
+  ButtonBase,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const CardStyled = styled(Card)`
@@ -8,6 +14,10 @@ export const CardStyled = styled(Card)`
   border-radius: 15px;
   height: 100%;
   position: relative;
+`;
+export const ButtonBaseStyled = styled(ButtonBase)`
+  display: block;
+  text-align: intial;
 `;
 export const CardMediaStyled = styled(CardMedia)`
   height: 0;

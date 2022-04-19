@@ -1,9 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
 
-export const getPosts = createAsyncThunk("posts/getPosts", async () => {
+export const getPosts = createAsyncThunk("posts/getPosts", async (page) => {
   try {
-    const { data } = await api.getPosts();
+    const { data } = await api.getPosts(page);
+    return data;
+  } catch (error) {
+    return error;
+  }
+});
+export const getPostById = createAsyncThunk("posts/getPostById", async (id) => {
+  try {
+    const { data } = await api.getPostById(id);
     return data;
   } catch (error) {
     return error;

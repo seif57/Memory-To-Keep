@@ -6,38 +6,48 @@ import {
   deletePost,
   likePost,
   getPostsBySearch,
+  getPostById,
 } from "../actions/posts";
 const postsAdapter = createEntityAdapter({
   selectId: (post) => post._id,
 });
 
+const initialState = {
+  isLoading: false,
+  error: null,
+  currentPage: 1,
+  totalPages: 0,
+};
+
 const postsSlice = createSlice({
   name: "posts",
-  initialState: postsAdapter.getInitialState({ loading: false, error: null }),
+  initialState: postsAdapter.getInitialState(initialState),
   reducers: {},
   extraReducers: {
     [getPosts.fulfilled]: (state, action) => {
-      state.loading = false;
-      postsAdapter.setAll(state, action);
+      state.isLoading = false;
+      postsAdapter.setAll(state, action.payload.data);
+      state.currentPage = action.payload.currentPage;
+      state.totalPages = action.payload.totalPages;
     },
     [getPosts.rejected]: (state, action) => {
       state.error = action.error;
     },
     [getPosts.pending]: (state) => {
-      state.loading = true;
+      state.isLoading = true;
     },
     [createPost.fulfilled]: (state, action) => {
-      state.loading = false;
+      state.isLoading = false;
       postsAdapter.addOne(state, action.payload);
     },
     [createPost.rejected]: (state, action) => {
       state.error = action.error;
     },
     [createPost.pending]: (state) => {
-      state.loading = true;
+      state.isLoading = true;
     },
     [updatePost.fulfilled]: (state, action) => {
-      state.loading = false;
+      state.isLoading = false;
       postsAdapter.updateOne(state, {
         id: action.payload._id,
         changes: action.payload,
@@ -47,28 +57,38 @@ const postsSlice = createSlice({
       state.error = action.error;
     },
     [updatePost.pending]: (state) => {
-      state.loading = true;
+      state.isLoading = true;
     },
     [deletePost.fulfilled]: (state, action) => {
-      state.loading = false;
+      state.isLoading = false;
       postsAdapter.removeOne(state, action);
     },
     [likePost.fulfilled]: (state, action) => {
-      state.loading = false;
+      state.isLoading = false;
       postsAdapter.updateOne(state, {
         id: action.payload._id,
         changes: action.payload,
       });
     },
     [getPostsBySearch.fulfilled]: (state, action) => {
-      state.loading = false;
+      state.isLoading = false;
       postsAdapter.setAll(state, action);
     },
     [getPostsBySearch.rejected]: (state, action) => {
       state.error = action.error;
     },
     [getPostsBySearch.pending]: (state) => {
-      state.loading = true;
+      state.isLoading = true;
+    },
+    [getPostById.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getPostById.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      postsAdapter.upsertOne(state, action);
+    },
+    [getPostById.rejected]: (state, action) => {
+      state.error = action.error;
     },
   },
 });

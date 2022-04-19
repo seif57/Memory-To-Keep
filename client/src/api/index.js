@@ -22,7 +22,9 @@ API_URL.interceptors.request.use(
   }
 );
 
-export const getPosts = () => API_URL.get("/posts");
+export const getPosts = (page) => API_URL.get(`/posts?page=${page}`);
+export const getPostById = (id) => API_URL.get(`/posts/${id}`);
+
 export const getPostsBySearch = (searchQuery) =>
   API_URL.get(`/posts/search?searchQuery=${searchQuery || "none"}`);
 
