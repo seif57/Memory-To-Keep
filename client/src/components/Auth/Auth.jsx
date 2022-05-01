@@ -59,7 +59,6 @@ function Auth() {
       dispatch(signIn({ formData: formData, navigate: navigate })).then(
         (response) => {
           if (response.error) {
-            console.log(response);
             return enqueueSnackbar(response.payload.response.data.message, {
               variant: "error",
               autoHideDuration: 2000,

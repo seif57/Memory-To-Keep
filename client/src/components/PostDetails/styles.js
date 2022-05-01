@@ -44,3 +44,15 @@ export const LoadingPaper = styled(Paper)`
   border-radius: 15px;
   height: 39vh;
 `;
+
+export const CommentsOuterContainer = styled("div")`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CommentsInnerContainer = styled("div")`
+  width: 50%;
+  height: 200px;
+  overflow-y: auto;
+  margin-right: 30px;
+`;

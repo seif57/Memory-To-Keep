@@ -9,14 +9,18 @@ export const getPosts = createAsyncThunk("posts/getPosts", async (page) => {
     return error;
   }
 });
-export const getPostById = createAsyncThunk("posts/getPostById", async (id) => {
-  try {
-    const { data } = await api.getPostById(id);
-    return data;
-  } catch (error) {
-    return error;
+export const getPostById = createAsyncThunk(
+  "posts/getPostById",
+  async (id, { dispatch }) => {
+    try {
+      const { data } = await api.getPostById(id);
+      dispatch(getPostsBySearch(data.title));
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
-});
+);
 
 export const createPost = createAsyncThunk(
   "posts/createPost",
@@ -61,6 +65,18 @@ export const likePost = createAsyncThunk("posts/likePost", async (id) => {
     return error;
   }
 });
+
+export const commentPost = createAsyncThunk(
+  "posts/commentPost",
+  async ({ value, id }) => {
+    try {
+      const { data } = await api.commentPost(value, id);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
 
 export const getPostsBySearch = createAsyncThunk(
   "posts/getPostsBySearch",

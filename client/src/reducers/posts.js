@@ -7,6 +7,7 @@ import {
   likePost,
   getPostsBySearch,
   getPostById,
+  commentPost,
 } from "../actions/posts";
 const postsAdapter = createEntityAdapter({
   selectId: (post) => post._id,
@@ -70,6 +71,17 @@ const postsSlice = createSlice({
         changes: action.payload,
       });
     },
+    [commentPost.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      postsAdapter.updateOne(state, {
+        id: action.payload._id,
+        changes: action.payload,
+      });
+    },
+    [commentPost.rejected]: (state, action) => {
+      state.error = action.error;
+    },
+
     [getPostsBySearch.fulfilled]: (state, action) => {
       state.isLoading = false;
       postsAdapter.setAll(state, action);

@@ -1,3 +1,4 @@
+import { Router } from "express";
 import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
 import { catchAsync } from "../utils.js";
@@ -90,6 +91,21 @@ export const likePost = catchAsync(async (req, res) => {
   } else {
     post.likes = post.likes.filter((id) => id !== String(req.userId));
   }
+
+  const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
+    new: true,
+  });
+
+  res.json(updatedPost);
+});
+
+export const commentPost = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { value } = req.body;
+
+  const post = await PostMessage.findById(id);
+
+  post.comments.push(value);
 
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
     new: true,

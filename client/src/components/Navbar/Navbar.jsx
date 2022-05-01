@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 
 import {
@@ -12,18 +12,19 @@ import {
   LogoutButton,
   Profile,
 } from "./styles";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import memoriesLogo from "../../assets/images/memoriesLogo.png";
 import memoriesText from "../../assets/images/memoriesText.png";
 
 import { Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logout } from "../../reducers/auth";
 
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.authData?.result);
+  const location = useLocation();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   const handleLogout = () => {
     dispatch(logout());
@@ -31,15 +32,14 @@ function Navbar() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = user?.token;
     if (token) {
       const decodedToken = jwt_decode(token);
 
-      if (decodedToken.exp * 1000 < Date.now()) {
-        handleLogout();
-      }
+      if (decodedToken.exp * 1000 < new Date().getTime()) handleLogout();
     }
-  }, []);
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, [location]);
 
   return (
     <AppBarStyled position="static" color="inherit">
@@ -56,12 +56,14 @@ function Navbar() {
         </Link>
       </InnerNavbarStyled>
       <ToolBarStyled>
-        {user ? (
+        {user?.result ? (
           <Profile>
-            <AvatarStyled alt={user.name} src={user.imageUrl}>
-              {user.name.charAt(0)}
+            <AvatarStyled alt={user?.result?.name} src={user?.result?.imageUrl}>
+              {user?.result?.name.charAt(0)}
             </AvatarStyled>
-            <TypographyStyled variant="h6">{user.name}</TypographyStyled>
+            <TypographyStyled variant="h6">
+              {user?.result?.name}
+            </TypographyStyled>
             <LogoutButton
               onClick={handleLogout}
               variant="contained"

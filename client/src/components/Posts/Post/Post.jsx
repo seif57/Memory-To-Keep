@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ThumbUpAltOutlined from "@mui/icons-material/ThumbUpAltOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   CardActionsStyled,
@@ -22,7 +22,10 @@ import { deletePost, likePost } from "../../../actions/posts";
 function Post({ post, setCurrentId }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.authData);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [likes, setLikes] = useState(post?.likes);
+  const userId = user?.result?.googleId || user?.result?._id;
+  const hasLiked = post.likes.find((like) => like === userId);
 
   const handleDelete = () => {
     dispatch(deletePost(post._id));
@@ -30,6 +33,11 @@ function Post({ post, setCurrentId }) {
 
   const handleLike = () => {
     dispatch(likePost(post._id));
+    if (hasLiked) {
+      setLikes(post.likes.filter((id) => id !== userId));
+    } else {
+      setLikes([...post.likes, userId]);
+    }
   };
 
   const openPost = () => {
@@ -37,21 +45,19 @@ function Post({ post, setCurrentId }) {
   };
 
   const Likes = () => {
-    if (post?.likes?.length > 0) {
-      return post.likes.find(
-        (like) => like === (user?.result?.googleId || user?.result?._id)
-      ) ? (
+    if (likes.length > 0) {
+      return likes.find((like) => like === userId) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
           &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+          {likes.length > 2
+            ? `You and ${likes.length - 1} others`
+            : `${likes.length} like${likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlined fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+          &nbsp;{likes.length} {likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
@@ -69,7 +75,7 @@ function Post({ post, setCurrentId }) {
       <ButtonBaseStyled onClick={openPost}>
         <CardMediaStyled image={post.selectedFile} title={post.title} />
         <Overlay>
-          <Typography variant="h6">{post.name}</Typography>
+          <Typography variant="h5">{post.name}</Typography>
           <Typography variant="body2">
             {moment(post.createdAt).fromNow()}
           </Typography>
@@ -80,7 +86,11 @@ function Post({ post, setCurrentId }) {
             <Button
               style={{ color: "white" }}
               size="small"
-              onClick={() => setCurrentId(post._id)}>
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentId(post._id);
+              }}
+            >
               <ModeEditIcon />
             </Button>
           </Overlay2>
@@ -90,21 +100,18 @@ function Post({ post, setCurrentId }) {
             {post.tags.map((tag) => `#${tag} `)}
           </Typography>
         </Details>
-        <Title noWrap variant="h5" gutterBottom>
+        <Title variant="h5" gutterBottom>
           {post.title}
         </Title>
         <CardContent>
           <Typography
-            sx={{
-              display: "-webkit-box",
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-            }}
+            component="p"
             variant="body2"
             color="textSecondary"
-            gutterBottom>
-            {post.message}
+            gutterBottom
+            style={{ display: "flex" }}
+          >
+            {post.message.split(" ").splice(0, 12).join(" ")}...
           </Typography>
         </CardContent>
       </ButtonBaseStyled>
@@ -114,13 +121,14 @@ function Post({ post, setCurrentId }) {
           size="small"
           color="primary"
           disabled={!user?.result}
-          onClick={handleLike}>
+          onClick={handleLike}
+        >
           <Likes />
         </Button>
         {(user?.result?.googleId === post?.creator ||
           user?.result?._id === post?.creator) && (
-          <Button size="small" color="secondary" onClick={handleDelete}>
-            <DeleteIcon fontSize="small" /> &nbsp; Delete
+          <Button size="small" color="error" onClick={handleDelete}>
+            <DeleteIcon fontSize="small" color="error" /> &nbsp; Delete
           </Button>
         )}
       </CardActionsStyled>
